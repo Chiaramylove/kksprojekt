@@ -1,2 +1,3 @@
 # kksprojekt
-Projekt von Paul D. Timmy
+Projekt von Paul D. Timmy 
+Herr Seibel goat <3
