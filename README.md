@@ -1,2 +1,2 @@
 # kksprojekt
-Projekt von Paul,  Karim, Shayan
+Projekt von Paul D. Timmy
