@@ -23,16 +23,20 @@ async function loadStocks() {
       </div>
     `;
 
-    try {
-      const res = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${stock.id}&apikey=${API_KEY}`);
-      const data = await res.json();
-      const series = data["Time Series (Daily)"];
-      const dates = Object.keys(series).slice(0, 7).reverse();
-      const prices = dates.map(date => parseFloat(series[date]["4. close"]));
-      const percentChange = (((prices[6] - prices[0]) / prices[0]) * 100).toFixed(2);
-      const sign = percentChange >= 0 ? '+' : '';
-      const className = percentChange >= 0 ? 'up' : 'down';
-      document.getElementById("price_" + stock.id).innerHTML = `\$${prices[6]} <span class="\${className}">\${sign}\${percentChange}%</span>`;
+   try {
+    const res = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${stock.id}&apikey=${API_KEY}`);
+    const data = await res.json();
+    const series = data["Time Series (Daily)"];
+    const dates = Object.keys(series).slice(0, 7).reverse();
+    const prices = dates.map(date => parseFloat(series[date]["4. close"]));
+    const percentChange = (((prices[6] - prices[0]) / prices[0]) * 100).toFixed(2);
+    const sign = percentChange >= 0 ? '+' : '';
+    const className = percentChange >= 0 ? 'up' : 'down';
+  
+    document.getElementById("price_" + stock.id).innerHTML = `$${prices[6]} <span class="${className}">${sign}${percentChange}%</span>`;
+  } catch (error) {
+    console.error("Fehler beim Laden der Aktien-Daten:", error);
+  }
 
       const ctx = document.getElementById(chartId).querySelector('canvas').getContext('2d');
       new Chart(ctx, {
