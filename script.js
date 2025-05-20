@@ -1,4 +1,4 @@
-const API_KEY = KSD0IANMYDI8VBTK; // API key for Alpha Vantage
+const API_KEY = "KSD0IANMYDI8VBTK"; // API key for Alpha Vantage
 let chart;
 
 async function loadStock(symbol) {
