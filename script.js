@@ -24,7 +24,7 @@ async function loadStocks() {
     `;
 
     try {
-      const res = await fetch(\"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=\${stock.id}&apikey=\${API_KEY}\");
+      const res = await fetch(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${stock.id}&apikey=${API_KEY}`);
       const data = await res.json();
       const series = data["Time Series (Daily)"];
       const dates = Object.keys(series).slice(0, 7).reverse();
