@@ -1,74 +1,73 @@
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #121212;
-  color: #ffffff;
+  margin: 0;
+  padding: 0;
   transition: background-color 0.3s, color 0.3s;
+  background-color: #121212;
+  color: #fff;
 }
 
 body.light-mode {
-  background-color: #ffffff;
-  color: #121212;
+  background-color: #f8f9fa;
+  color: #222;
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1em;
-  background-color: #1f1f1f;
-  color: white;
-}
-
-.header-controls {
-  display: flex;
-  align-items: center;
-  gap: 1em;
-}
-
-.side-menu {
+#menuBtn {
   position: fixed;
-  right: -220px;
+  top: 10px;
+  right: 10px;
+  z-index: 2000;
+  font-size: 20px;
+}
+
+#sideMenu {
+  position: fixed;
   top: 0;
-  width: 200px;
+  right: -250px;
+  width: 250px;
   height: 100%;
-  background-color: #333;
+  background: #333;
   color: white;
-  padding: 1em;
-  transition: right 0.3s;
+  padding: 20px;
+  transition: right 0.3s ease;
   z-index: 1000;
 }
 
-.side-menu.open {
+#sideMenu.open {
   right: 0;
 }
 
-.side-menu button {
-  display: block;
-  width: 100%;
-  margin: 0.5em 0;
-  background: #444;
-  color: white;
+main {
+  padding: 20px;
+  margin-top: 50px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: var(--theme-color, #00ccff);
   border: none;
-  padding: 0.5em;
+  color: white;
   cursor: pointer;
 }
 
-main {
-  padding: 1em;
+canvas {
+  background-color: #222;
+  border: 1px solid #444;
+  max-width: 100%;
 }
 
-.chart-container {
-  margin-bottom: 2em;
-  border-bottom: 1px solid gray;
-  padding-bottom: 1em;
+body.light-mode canvas {
+  background-color: #fff !important;
+  border: 1px solid #ccc;
 }
 
+/* Switch Toggle */
 .switch {
   position: relative;
   display: inline-block;
-  width: 40px;
-  height: 20px;
+  width: 50px;
+  height: 24px;
 }
 
 .switch input {
@@ -80,44 +79,46 @@ main {
 .slider {
   position: absolute;
   cursor: pointer;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 24px;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #888;
-  transition: 0.4s;
-  border-radius: 20px;
 }
 
 .slider:before {
-  position: absolute;
   content: "";
-  height: 16px;
-  width: 16px;
-  left: 2px;
-  bottom: 2px;
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
   background-color: white;
   transition: 0.4s;
   border-radius: 50%;
 }
 
-.switch input:checked + .slider {
-  background-color: #2196F3;
+input:checked + .slider:before {
+  transform: translateX(26px);
 }
 
-.switch input:checked + .slider:before {
-  transform: translateX(20px);
-}
-
-.currency-label {
+.color-options {
   display: flex;
-  align-items: center;
-  gap: 0.5em;
-  color: white;
-  margin-top: 1em;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.note {
-  opacity: 0.7;
-  font-style: italic;
+.color-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid white;
 }
+
+.cyan { background-color: #00ccff; }
+.purple { background-color: #a000c0; }
+.red { background-color: #e00000; }
+.green { background-color: #00cc66; }
