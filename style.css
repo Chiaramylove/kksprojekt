@@ -13,28 +13,34 @@ body.light-mode {
 
 header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   padding: 1em;
   background-color: #1f1f1f;
-  color: #fff;
+  color: white;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1em;
 }
 
 .side-menu {
   position: fixed;
-  left: -200px;
+  right: -220px;
   top: 0;
   width: 200px;
   height: 100%;
   background-color: #333;
   color: white;
   padding: 1em;
-  transition: left 0.3s;
+  transition: right 0.3s;
   z-index: 1000;
 }
 
 .side-menu.open {
-  left: 0;
+  right: 0;
 }
 
 .side-menu button {
@@ -49,8 +55,13 @@ header {
 }
 
 main {
-  margin-left: 1em;
   padding: 1em;
+}
+
+.chart-container {
+  margin-bottom: 2em;
+  border-bottom: 1px solid gray;
+  padding-bottom: 1em;
 }
 
 .switch {
@@ -104,4 +115,9 @@ main {
   gap: 0.5em;
   color: white;
   margin-top: 1em;
+}
+
+.note {
+  opacity: 0.7;
+  font-style: italic;
 }
