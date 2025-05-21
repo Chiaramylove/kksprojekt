@@ -2,29 +2,58 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Stock Viewer</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aktienübersicht</title>
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>📈 Aktienübersicht</h1>
-      <div class="toggles">
-        <label class="switch">
-          <input type="checkbox" id="themeToggle" />
-          <span class="slider"></span>
-        </label>
-      </div>
-    </header>
+  <header>
+    <h1>Aktienübersicht</h1>
+    <button id="menuBtn">☰</button>
+  </header>
 
-    <main>
-      <canvas id="stockChart"></canvas>
-    </main>
-  </div>
+  <main>
+    <div id="stock-list">
+      <button onclick="loadStock('AAPL')">Apple</button>
+      <button onclick="loadStock('MSFT')">Microsoft</button>
+      <button onclick="loadStock('GOOGL')">Google</button>
+      <button onclick="loadStock('AMZN')">Amazon</button>
+    </div>
+
+    <div id="stock-title">Wähle eine Aktie</div>
+    <div id="stock-price"></div>
+    <canvas id="stockChart"></canvas>
+  </main>
+
+  <aside id="sideMenu">
+    <h2>Einstellungen</h2>
+
+    <div class="switch-wrapper">
+      <label>Light Mode</label>
+      <label class="switch">
+        <input type="checkbox" id="themeToggle" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="switch-wrapper">
+      <label>Währung: € / $</label>
+      <label class="switch">
+        <input type="checkbox" id="currencyToggle" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="color-buttons">
+      <div class="color-circle" data-color="#00ccff"></div>
+      <div class="color-circle" data-color="#a24dff"></div>
+      <div class="color-circle" data-color="#ff4d4d"></div>
+      <div class="color-circle" data-color="#00e676"></div>
+    </div>
+  </aside>
 
   <script src="script.js"></script>
 </body>
 </html>
-
