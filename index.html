@@ -3,38 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aktienanzeige</title>
+  <title>Stock Viewer</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
-  <!-- Your page content here -->
-  <canvas id="stockChart"></canvas>
-  <h1 id="stock-title">Apple</h1>
-  <p id="stock-price">Aktueller Preis: ...</p>
-
-  <!-- Side menu -->
-  <div id="sideMenu">
-    <!-- Theme toggle -->
+  <header>
+    <button id="menuBtn">☰ Menü</button>
+    <h1 id="stock-title">Wähle eine Aktie</h1>
     <label class="switch">
-      <input type="checkbox" id="themeToggle">
+      <input type="checkbox" id="themeToggle" />
       <span class="slider"></span>
     </label>
-    <span>Dunkel/Hell</span>
+  </header>
 
-    <!-- Currency toggle -->
-    <label class="switch">
-      <input type="checkbox" id="currencyToggle">
-      <span class="slider"></span>
+  <aside id="sideMenu" class="side-menu">
+    <button onclick="loadStock('AAPL')">Apple</button>
+    <button onclick="loadStock('TSLA')">Tesla</button>
+    <button onclick="loadStock('MSFT')">Microsoft</button>
+    <hr />
+    <label class="currency-label">
+      € / $
+      <input type="checkbox" id="currencyToggle" />
     </label>
-    <span>€ anzeigen</span>
-  </div>
+  </aside>
 
-  <button id="menuBtn">☰</button>
+  <main>
+    <p id="stock-price"></p>
+    <canvas id="stockChart" width="600" height="400"></canvas>
+  </main>
 
-  <!-- ✅ JavaScript at the end -->
   <script src="script.js"></script>
 </body>
 </html>
+
