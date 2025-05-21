@@ -1,6 +1,7 @@
 const TWELVE_DATA_KEY = "83579784923942f584e172a8955697a8";
 const FINNHUB_KEY = "d0mve4hr01qmjqmjnp3gd0mve4hr01qmjqmjnp40";
 let chart;
+let useEuro = false; // Default is $
 
 window.loadStock = async function (symbol) {
   document.getElementById("stock-title").textContent = `Lade ${symbol}...`;
@@ -54,8 +55,11 @@ async function fetchFromFinnhub(symbol) {
 }
 
 function updateDisplay(symbol, price, dates, values) {
+  const currencySymbol = useEuro ? "€" : "$";
+  const convertedPrice = useEuro ? (price * 0.92) : price; // EUR/USD conversion rate
+
   document.getElementById("stock-title").textContent = symbol;
-  document.getElementById("stock-price").textContent = `Aktueller Preis: $${price.toFixed(2)}`;
+  document.getElementById("stock-price").textContent = `Aktueller Preis: ${currencySymbol}${convertedPrice.toFixed(2)}`;
 
   if (chart) chart.destroy();
   const ctx = document.getElementById("stockChart").getContext("2d");
@@ -65,7 +69,7 @@ function updateDisplay(symbol, price, dates, values) {
       labels: dates,
       datasets: [{
         label: `${symbol} Kursverlauf`,
-        data: values,
+        data: values.map(v => useEuro ? v * 0.92 : v),
         borderColor: "#00ccff",
         backgroundColor: "rgba(0, 204, 255, 0.2)",
         tension: 0.3
@@ -91,6 +95,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const menuBtn = document.getElementById("menuBtn");
   const sideMenu = document.getElementById("sideMenu");
   const themeToggle = document.getElementById("themeToggle");
+  const currencyToggle = document.getElementById("currencyToggle");
 
   menuBtn.addEventListener("click", () => {
     sideMenu.classList.toggle("open");
@@ -98,6 +103,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
   themeToggle.addEventListener("change", () => {
     document.body.classList.toggle("light-mode", themeToggle.checked);
-    if (chart) chart.update(); // Farbanpassung für Achsen neu laden
+    if (chart) chart.update();
+  });
+
+  currencyToggle.addEventListener("change", () => {
+    useEuro = currencyToggle.checked;
+    const currentSymbol = document.getElementById("stock-title").textContent;
+    if (currentSymbol && currentSymbol !== "Fehler") {
+      loadStock(currentSymbol);
+    }
   });
 });
