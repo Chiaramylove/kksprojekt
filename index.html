@@ -2,59 +2,29 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aktienübersicht</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stock Viewer</title>
+  <link rel="stylesheet" href="style.css"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.0"></script>
 </head>
 <body>
-  <header>
-    <button id="menuBtn">☰</button>
-    <h1>Aktienübersicht</h1>
-  </header>
+  <div class="container">
+    <header>
+      <h1>📈 Aktienübersicht</h1>
+      <div class="toggles">
+        <label class="switch">
+          <input type="checkbox" id="themeToggle" />
+          <span class="slider"></span>
+        </label>
+      </div>
+    </header>
 
-  <main>
-    <div id="stock-list">
-      <button onclick="loadStock('AAPL')">Apple</button>
-      <button onclick="loadStock('MSFT')">Microsoft</button>
-      <button onclick="loadStock('GOOGL')">Google</button>
-      <button onclick="loadStock('TSLA')">Tesla</button>
-      <button onclick="loadStock('AMZN')">Amazon</button>
-    </div>
-
-    <div id="chart-container">
-      <h2 id="stock-title">Wähle eine Aktie</h2>
-      <p id="stock-price"></p>
+    <main>
       <canvas id="stockChart"></canvas>
-    </div>
-  </main>
-
-  <nav id="sideMenu">
-    <h3>Einstellungen</h3>
-    
-    <label class="switch-label">🌙/☀️
-      <label class="switch">
-        <input type="checkbox" id="themeToggle">
-        <span class="slider"></span>
-      </label>
-    </label>
-
-    <label class="switch-label">€/$
-      <label class="switch">
-        <input type="checkbox" id="currencyToggle">
-        <span class="slider"></span>
-      </label>
-    </label>
-
-    <div id="themeColors">
-      <div class="circle cyan" onclick="setThemeColor('cyan')"></div>
-      <div class="circle purple" onclick="setThemeColor('purple')"></div>
-      <div class="circle red" onclick="setThemeColor('red')"></div>
-      <div class="circle green" onclick="setThemeColor('green')"></div>
-    </div>
-  </nav>
+    </main>
+  </div>
 
   <script src="script.js"></script>
 </body>
 </html>
+
