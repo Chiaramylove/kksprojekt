@@ -2,11 +2,11 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Aktienübersicht</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.0"></script>
 </head>
 <body>
   <header>
@@ -14,43 +14,46 @@
     <h1>Aktienübersicht</h1>
   </header>
 
-  <aside id="sideMenu">
-    <h2>Einstellungen</h2>
-    <div class="toggle-group">
-      <label>🌙/☀️
-        <input type="checkbox" id="themeToggle" />
-        <span class="slider"></span>
-      </label>
-    </div>
-    <div class="toggle-group">
-      <label>€/$
-        <input type="checkbox" id="currencyToggle" />
-        <span class="slider"></span>
-      </label>
-    </div>
-    <div class="color-palette">
-      <div class="color-circle" data-color="cyan"></div>
-      <div class="color-circle" data-color="purple"></div>
-      <div class="color-circle" data-color="red"></div>
-      <div class="color-circle" data-color="green"></div>
-    </div>
-  </aside>
-
   <main>
-    <section class="stocks-list">
+    <div id="stock-list">
       <button onclick="loadStock('AAPL')">Apple</button>
-      <button onclick="loadStock('GOOGL')">Google</button>
       <button onclick="loadStock('MSFT')">Microsoft</button>
+      <button onclick="loadStock('GOOGL')">Google</button>
       <button onclick="loadStock('TSLA')">Tesla</button>
       <button onclick="loadStock('AMZN')">Amazon</button>
-    </section>
+    </div>
 
-    <section class="chart-container">
+    <div id="chart-container">
       <h2 id="stock-title">Wähle eine Aktie</h2>
       <p id="stock-price"></p>
       <canvas id="stockChart"></canvas>
-    </section>
+    </div>
   </main>
+
+  <nav id="sideMenu">
+    <h3>Einstellungen</h3>
+    
+    <label class="switch-label">🌙/☀️
+      <label class="switch">
+        <input type="checkbox" id="themeToggle">
+        <span class="slider"></span>
+      </label>
+    </label>
+
+    <label class="switch-label">€/$
+      <label class="switch">
+        <input type="checkbox" id="currencyToggle">
+        <span class="slider"></span>
+      </label>
+    </label>
+
+    <div id="themeColors">
+      <div class="circle cyan" onclick="setThemeColor('cyan')"></div>
+      <div class="circle purple" onclick="setThemeColor('purple')"></div>
+      <div class="circle red" onclick="setThemeColor('red')"></div>
+      <div class="circle green" onclick="setThemeColor('green')"></div>
+    </div>
+  </nav>
 
   <script src="script.js"></script>
 </body>
