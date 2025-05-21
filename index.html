@@ -1,53 +1,57 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Aktienübersicht</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1"></script>
 </head>
 <body>
-  <button id="menuBtn">☰ Menü</button>
+  <header>
+    <button id="menuBtn">☰</button>
+    <h1>Aktienübersicht</h1>
+  </header>
 
-  <div id="sideMenu">
+  <aside id="sideMenu">
     <h2>Einstellungen</h2>
-    <label class="switch">
-      <input type="checkbox" id="themeToggle">
-      <span class="slider round"></span>
-    </label>
-    <span>Light Mode</span>
-    <br><br>
-    <label class="switch">
-      <input type="checkbox" id="currencyToggle">
-      <span class="slider round"></span>
-    </label>
-    <span>€ / $</span>
-
-    <h3>Farbe ändern:</h3>
-    <div class="color-options">
-      <div class="color-circle cyan" data-color="#00ccff"></div>
-      <div class="color-circle purple" data-color="#a000c0"></div>
-      <div class="color-circle red" data-color="#e00000"></div>
-      <div class="color-circle green" data-color="#00cc66"></div>
+    <div class="toggle-group">
+      <label>🌙/☀️
+        <input type="checkbox" id="themeToggle" />
+        <span class="slider"></span>
+      </label>
     </div>
-  </div>
+    <div class="toggle-group">
+      <label>€/$
+        <input type="checkbox" id="currencyToggle" />
+        <span class="slider"></span>
+      </label>
+    </div>
+    <div class="color-palette">
+      <div class="color-circle" data-color="cyan"></div>
+      <div class="color-circle" data-color="purple"></div>
+      <div class="color-circle" data-color="red"></div>
+      <div class="color-circle" data-color="green"></div>
+    </div>
+  </aside>
 
   <main>
-    <h1>Aktienübersicht</h1>
-    <div id="stock-buttons">
+    <section class="stocks-list">
       <button onclick="loadStock('AAPL')">Apple</button>
-      <button onclick="loadStock('MSFT')">Microsoft</button>
       <button onclick="loadStock('GOOGL')">Google</button>
+      <button onclick="loadStock('MSFT')">Microsoft</button>
+      <button onclick="loadStock('TSLA')">Tesla</button>
       <button onclick="loadStock('AMZN')">Amazon</button>
-      <button onclick="loadStock('META')">Meta</button>
-    </div>
+    </section>
 
-    <h2 id="stock-title">Wähle eine Aktie</h2>
-    <p id="stock-price"></p>
-    <canvas id="stockChart" width="400" height="200"></canvas>
+    <section class="chart-container">
+      <h2 id="stock-title">Wähle eine Aktie</h2>
+      <p id="stock-price"></p>
+      <canvas id="stockChart"></canvas>
+    </section>
   </main>
 
   <script src="script.js"></script>
 </body>
 </html>
-
