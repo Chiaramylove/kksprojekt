@@ -1,40 +1,50 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Stock Viewer</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Aktienübersicht</title>
+  <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Aktienübersicht</h1>
-    <div class="header-controls">
-      <label class="switch">
-        <input type="checkbox" id="themeToggle" />
-        <span class="slider"></span>
-      </label>
-      <button id="menuBtn">☰</button>
-    </div>
-  </header>
+  <button id="menuBtn">☰ Menü</button>
 
-  <aside id="sideMenu" class="side-menu">
-    <h2>Aktien</h2>
-    <button onclick="loadStock('AAPL')">Apple</button>
-    <button onclick="loadStock('TSLA')">Tesla</button>
-    <button onclick="loadStock('MSFT')">Microsoft</button>
-    <button onclick="loadStock('GOOGL')">Google</button>
-    <button onclick="loadStock('AMZN')">Amazon</button>
-    <hr />
-    <label class="currency-label">
-      € / $
-      <input type="checkbox" id="currencyToggle" />
+  <div id="sideMenu">
+    <h2>Einstellungen</h2>
+    <label class="switch">
+      <input type="checkbox" id="themeToggle">
+      <span class="slider round"></span>
     </label>
-  </aside>
+    <span>Light Mode</span>
+    <br><br>
+    <label class="switch">
+      <input type="checkbox" id="currencyToggle">
+      <span class="slider round"></span>
+    </label>
+    <span>€ / $</span>
 
-  <main id="mainContent">
-    <p class="note">Wähle Aktien aus dem Menü rechts →</p>
+    <h3>Farbe ändern:</h3>
+    <div class="color-options">
+      <div class="color-circle cyan" data-color="#00ccff"></div>
+      <div class="color-circle purple" data-color="#a000c0"></div>
+      <div class="color-circle red" data-color="#e00000"></div>
+      <div class="color-circle green" data-color="#00cc66"></div>
+    </div>
+  </div>
+
+  <main>
+    <h1>Aktienübersicht</h1>
+    <div id="stock-buttons">
+      <button onclick="loadStock('AAPL')">Apple</button>
+      <button onclick="loadStock('MSFT')">Microsoft</button>
+      <button onclick="loadStock('GOOGL')">Google</button>
+      <button onclick="loadStock('AMZN')">Amazon</button>
+      <button onclick="loadStock('META')">Meta</button>
+    </div>
+
+    <h2 id="stock-title">Wähle eine Aktie</h2>
+    <p id="stock-price"></p>
+    <canvas id="stockChart" width="400" height="200"></canvas>
   </main>
 
   <script src="script.js"></script>
