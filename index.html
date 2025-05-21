@@ -1,43 +1,40 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
   <meta charset="UTF-8" />
-  <title>Aktienkurs-Anzeige</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aktienanzeige</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <div id="sideMenu" class="side-menu">
-    <h2>Menü</h2>
+
+  <!-- Your page content here -->
+  <canvas id="stockChart"></canvas>
+  <h1 id="stock-title">Apple</h1>
+  <p id="stock-price">Aktueller Preis: ...</p>
+
+  <!-- Side menu -->
+  <div id="sideMenu">
+    <!-- Theme toggle -->
     <label class="switch">
-      <input type="checkbox" id="themeToggle" />
+      <input type="checkbox" id="themeToggle">
       <span class="slider"></span>
     </label>
-    <span>Light Mode</span>
+    <span>Dunkel/Hell</span>
+
+    <!-- Currency toggle -->
+    <label class="switch">
+      <input type="checkbox" id="currencyToggle">
+      <span class="slider"></span>
+    </label>
+    <span>€ anzeigen</span>
   </div>
-  
-  <label class="switch">
-    <input type="checkbox" id="currencyToggle" />
-    <span class="slider"></span>
-  </label>
-  <span>€ anzeigen</span>
 
-  <button id="menuBtn">&#9776; Menü</button>
+  <button id="menuBtn">☰</button>
 
-  <h1 style="text-align: center; font-size: 2.5rem; margin-bottom: 20px;">Aktien</h1>
-  <h1 id="stock-title">Wähle eine Aktie</h1>
-  <p id="stock-price"></p>
-
-  <button onclick="loadStock('AAPL')">Apple</button>
-  <button onclick="loadStock('AMZN')">Amazon</button>
-  <button onclick="loadStock('GOOGL')">Google</button>
-  <button onclick="loadStock('MSFT')">Microsoft</button>
-
-  <canvas id="stockChart" width="600" height="300"></canvas>
-
+  <!-- ✅ JavaScript at the end -->
   <script src="script.js"></script>
 </body>
-
 </html>
