@@ -22,4 +22,97 @@
 
    button:hover {
      background-color: #0099cc;
+
+      /* Side menu styles */
+.side-menu {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  top: 0; left: -250px;
+  background-color: #222;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: left 0.3s ease;
+  color: white;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 18px;
+}
+
+/* When menu is open */
+.side-menu.open {
+  left: 0;
+}
+
+/* Menu button */
+#menuBtn {
+  position: fixed;
+  top: 15px; left: 15px;
+  background-color: #00ccff;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  z-index: 1100;
+}
+
+/* Toggle switch style */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 34px;
+  top: 0; left: 0; right: 0; bottom: 0;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Light mode body */
+body.light-mode {
+  background-color: #f8f9fa;
+  color: #222;
+}
+
+/* Adjust canvas background in light mode */
+body.light-mode canvas {
+  background-color: #fff !important;
+  border: 1px solid #ccc;
+}
+
    }
