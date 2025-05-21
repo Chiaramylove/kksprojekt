@@ -1,75 +1,85 @@
 const TWELVE_DATA_KEY = "83579784923942f584e172a8955697a8";
 const FINNHUB_KEY = "d0mve4hr01qmjqmjnp3gd0mve4hr01qmjqmjnp40";
-let chart;
-let useEuro = false; // Default is $
+let charts = {};
+let useEuro = false;
 
-window.loadStock = async function (symbol) {
-  document.getElementById("stock-title").textContent = `Lade ${symbol}...`;
-  document.getElementById("stock-price").textContent = "";
+async function loadStock(symbol) {
+  if (document.getElementById(`chart-${symbol}`)) return; // prevent duplicates
 
   try {
-    const data = await fetchFromTwelveData(symbol);
-    if (!data) throw new Error("TwelveData failed, trying Finnhub...");
-    updateDisplay(symbol, data.price, data.dates, data.values);
-  } catch (err) {
-    console.warn(err.message);
-    try {
-      const data = await fetchFromFinnhub(symbol);
-      if (!data) throw new Error("Finnhub failed too.");
-      updateDisplay(symbol, data.price, data.dates, data.values);
-    } catch (finalError) {
-      console.error(finalError);
-      document.getElementById("stock-title").textContent = `Fehler beim Laden von ${symbol}`;
-    }
+    const data = await fetchFromTwelveData(symbol) || await fetchFromFinnhub(symbol);
+    if (!data) throw new Error("Keine Daten gefunden");
+    displayStock(symbol, data.price, data.dates, data.values);
+  } catch (e) {
+    alert(`Fehler beim Laden von ${symbol}: ${e.message}`);
   }
-};
+}
 
 async function fetchFromTwelveData(symbol) {
-  const priceUrl = `https://api.twelvedata.com/price?symbol=${symbol}&apikey=${TWELVE_DATA_KEY}`;
-  const seriesUrl = `https://api.twelvedata.com/time_series?symbol=${symbol}&interval=1day&outputsize=30&apikey=${TWELVE_DATA_KEY}`;
-  const [priceRes, seriesRes] = await Promise.all([fetch(priceUrl), fetch(seriesUrl)]);
-  const priceData = await priceRes.json();
-  const seriesData = await seriesRes.json();
+  try {
+    const priceUrl = `https://api.twelvedata.com/price?symbol=${symbol}&apikey=${TWELVE_DATA_KEY}`;
+    const seriesUrl = `https://api.twelvedata.com/time_series?symbol=${symbol}&interval=1day&outputsize=30&apikey=${TWELVE_DATA_KEY}`;
+    const [priceRes, seriesRes] = await Promise.all([fetch(priceUrl), fetch(seriesUrl)]);
+    const priceData = await priceRes.json();
+    const seriesData = await seriesRes.json();
 
-  if (!priceData.price || !seriesData.values) return null;
-
-  const dates = seriesData.values.map(e => e.datetime).reverse();
-  const values = seriesData.values.map(e => parseFloat(e.close)).reverse();
-
-  return { price: parseFloat(priceData.price), dates, values };
+    if (!priceData.price || !seriesData.values) return null;
+    return {
+      price: parseFloat(priceData.price),
+      dates: seriesData.values.map(e => e.datetime).reverse(),
+      values: seriesData.values.map(e => parseFloat(e.close)).reverse()
+    };
+  } catch {
+    return null;
+  }
 }
 
 async function fetchFromFinnhub(symbol) {
-  const priceUrl = `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${FINNHUB_KEY}`;
-  const seriesUrl = `https://finnhub.io/api/v1/stock/candle?symbol=${symbol}&resolution=D&count=30&token=${FINNHUB_KEY}`;
-  const [priceRes, seriesRes] = await Promise.all([fetch(priceUrl), fetch(seriesUrl)]);
-  const priceData = await priceRes.json();
-  const seriesData = await seriesRes.json();
+  try {
+    const priceUrl = `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${FINNHUB_KEY}`;
+    const seriesUrl = `https://finnhub.io/api/v1/stock/candle?symbol=${symbol}&resolution=D&count=30&token=${FINNHUB_KEY}`;
+    const [priceRes, seriesRes] = await Promise.all([fetch(priceUrl), fetch(seriesUrl)]);
+    const priceData = await priceRes.json();
+    const seriesData = await seriesRes.json();
 
-  if (!priceData.c || !seriesData.c || seriesData.s !== "ok") return null;
+    if (!priceData.c || seriesData.s !== "ok") return null;
 
-  const dates = seriesData.t.map(t => new Date(t * 1000).toISOString().split("T")[0]);
-  const values = seriesData.c;
-
-  return { price: parseFloat(priceData.c), dates, values };
+    return {
+      price: priceData.c,
+      dates: seriesData.t.map(t => new Date(t * 1000).toISOString().split("T")[0]),
+      values: seriesData.c
+    };
+  } catch {
+    return null;
+  }
 }
 
-function updateDisplay(symbol, price, dates, values) {
+function displayStock(symbol, price, dates, values) {
+  const main = document.getElementById("mainContent");
+  const container = document.createElement("div");
+  container.className = "chart-container";
+  container.id = `chart-${symbol}`;
+
+  const conversionRate = 0.92;
+  const adjustedPrice = useEuro ? price * conversionRate : price;
   const currencySymbol = useEuro ? "€" : "$";
-  const convertedPrice = useEuro ? (price * 0.92) : price; // EUR/USD conversion rate
 
-  document.getElementById("stock-title").textContent = symbol;
-  document.getElementById("stock-price").textContent = `Aktueller Preis: ${currencySymbol}${convertedPrice.toFixed(2)}`;
+  const title = document.createElement("h2");
+  title.textContent = `${symbol} – Aktueller Preis: ${currencySymbol}${adjustedPrice.toFixed(2)}`;
 
-  if (chart) chart.destroy();
-  const ctx = document.getElementById("stockChart").getContext("2d");
-  chart = new Chart(ctx, {
+  const canvas = document.createElement("canvas");
+  container.appendChild(title);
+  container.appendChild(canvas);
+  main.appendChild(container);
+
+  const ctx = canvas.getContext("2d");
+  const chart = new Chart(ctx, {
     type: "line",
     data: {
       labels: dates,
       datasets: [{
-        label: `${symbol} Kursverlauf`,
-        data: values.map(v => useEuro ? v * 0.92 : v),
+        label: `${symbol} Verlauf`,
+        data: values.map(v => useEuro ? v * conversionRate : v),
         borderColor: "#00ccff",
         backgroundColor: "rgba(0, 204, 255, 0.2)",
         tension: 0.3
@@ -77,10 +87,8 @@ function updateDisplay(symbol, price, dates, values) {
     },
     options: {
       responsive: true,
-      interaction: { mode: "index", intersect: false },
       plugins: {
-        legend: { labels: { color: getComputedStyle(document.body).color } },
-        tooltip: { mode: "index", intersect: false }
+        legend: { labels: { color: getComputedStyle(document.body).color } }
       },
       scales: {
         x: { ticks: { color: getComputedStyle(document.body).color } },
@@ -88,29 +96,33 @@ function updateDisplay(symbol, price, dates, values) {
       }
     }
   });
+
+  charts[symbol] = chart;
 }
 
-// Menü & Theme Toggle
-window.addEventListener("DOMContentLoaded", () => {
-  const menuBtn = document.getElementById("menuBtn");
-  const sideMenu = document.getElementById("sideMenu");
-  const themeToggle = document.getElementById("themeToggle");
-  const currencyToggle = document.getElementById("currencyToggle");
+function refreshAllCharts() {
+  for (let symbol in charts) {
+    const container = document.getElementById(`chart-${symbol}`);
+    if (container) container.remove();
+  }
+  charts = {};
+  document.querySelector(".note")?.remove();
+  loadStock('AAPL'); // Optional default reload
+}
 
-  menuBtn.addEventListener("click", () => {
-    sideMenu.classList.toggle("open");
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("menuBtn").addEventListener("click", () => {
+    document.getElementById("sideMenu").classList.toggle("open");
   });
 
-  themeToggle.addEventListener("change", () => {
-    document.body.classList.toggle("light-mode", themeToggle.checked);
-    if (chart) chart.update();
+  document.getElementById("themeToggle").addEventListener("change", (e) => {
+    document.body.classList.toggle("light-mode", e.target.checked);
+    Object.values(charts).forEach(chart => chart.update());
   });
 
-  currencyToggle.addEventListener("change", () => {
-    useEuro = currencyToggle.checked;
-    const currentSymbol = document.getElementById("stock-title").textContent;
-    if (currentSymbol && currentSymbol !== "Fehler") {
-      loadStock(currentSymbol);
-    }
+  document.getElementById("currencyToggle").addEventListener("change", (e) => {
+    useEuro = e.target.checked;
+    refreshAllCharts();
   });
 });
+
