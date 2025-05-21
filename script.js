@@ -97,3 +97,18 @@ function updateDisplay(symbol, price, dates, values) {
     }
   });
 }
+
+// Slide-out menu and light mode toggle
+const menuBtn = document.getElementById("menuBtn");
+const sideMenu = document.getElementById("sideMenu");
+const themeToggle = document.getElementById("themeToggle");
+
+// Toggle side menu visibility
+menuBtn.addEventListener("click", () => {
+  sideMenu.classList.toggle("open");
+});
+
+// Toggle light mode
+themeToggle.addEventListener("change", () => {
+  document.body.classList.toggle("light-mode", themeToggle.checked);
+});
