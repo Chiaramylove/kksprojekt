@@ -1,5 +1,4 @@
 const TWELVE_DATA_KEY = "83579784923942f584e172a8955697a8";
-const FINNHUB_KEY = "d0mve4hr01qmjqmjnp3gd0mve4hr01qmjqmjnp40";
 let chart;
 let useEuro = false;
 
@@ -9,18 +8,11 @@ async function loadStock(symbol) {
 
   try {
     const data = await fetchFromTwelveData(symbol);
-    if (!data) throw new Error("TwelveData failed, trying Finnhub...");
+    if (!data) throw new Error("Fehler beim Abrufen der Daten von TwelveData.");
     updateDisplay(symbol, data.price, data.dates, data.values);
   } catch (err) {
-    console.warn(err.message);
-    try {
-      const data = await fetchFromFinnhub(symbol);
-      if (!data) throw new Error("Finnhub failed too.");
-      updateDisplay(symbol, data.price, data.dates, data.values);
-    } catch (finalError) {
-      console.error(finalError);
-      document.getElementById("stock-title").textContent = `Fehler beim Laden von ${symbol}`;
-    }
+    console.error(err);
+    document.getElementById("stock-title").textContent = `Fehler beim Laden von ${symbol}`;
   }
 }
 
@@ -37,21 +29,6 @@ async function fetchFromTwelveData(symbol) {
   const values = seriesData.values.map(e => parseFloat(e.close)).reverse();
 
   return { price: parseFloat(priceData.price), dates, values };
-}
-
-async function fetchFromFinnhub(symbol) {
-  const priceUrl = `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${FINNHUB_KEY}`;
-  const seriesUrl = `https://finnhub.io/api/v1/stock/candle?symbol=${symbol}&resolution=D&count=30&token=${FINNHUB_KEY}`;
-  const [priceRes, seriesRes] = await Promise.all([fetch(priceUrl), fetch(seriesUrl)]);
-  const priceData = await priceRes.json();
-  const seriesData = await seriesRes.json();
-
-  if (!priceData.c || !seriesData.c || seriesData.s !== "ok") return null;
-
-  const dates = seriesData.t.map(t => new Date(t * 1000).toISOString().split("T")[0]);
-  const values = seriesData.c;
-
-  return { price: parseFloat(priceData.c), dates, values };
 }
 
 function updateDisplay(symbol, price, dates, values) {
@@ -120,7 +97,6 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Default theme color
+  // Standardfarbe setzen
   document.documentElement.style.setProperty("--theme-color", "#00ccff");
 });
-
