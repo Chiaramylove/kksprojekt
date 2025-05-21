@@ -1,19 +1,37 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Light/Dark Mode Test</title>
+  <meta charset="UTF-8" />
+  <title>Aktienkurs-Anzeige</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <label class="switch">
-    <input type="checkbox" id="themeToggle">
-    <span class="slider"></span>
-  </label>
 
-  <h1>Testseite</h1>
-  <canvas id="stockChart" width="400" height="200"></canvas>
+<body>
+  <div id="sideMenu" class="side-menu">
+    <h2>Menü</h2>
+    <label class="switch">
+      <input type="checkbox" id="themeToggle" />
+      <span class="slider"></span>
+    </label>
+    <span>Light Mode</span>
+  </div>
+
+  <button id="menuBtn">&#9776; Menü</button>
+
+  <h1 style="text-align: center; font-size: 2.5rem; margin-bottom: 20px;">Aktien</h1>
+  <h1 id="stock-title">Wähle eine Aktie</h1>
+  <p id="stock-price"></p>
+
+  <button onclick="loadStock('AAPL')">Apple</button>
+  <button onclick="loadStock('AMZN')">Amazon</button>
+  <button onclick="loadStock('GOOGL')">Google</button>
+  <button onclick="loadStock('MSFT')">Microsoft</button>
+
+  <canvas id="stockChart" width="600" height="300"></canvas>
 
   <script src="script.js"></script>
 </body>
+
 </html>
