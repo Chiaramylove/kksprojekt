@@ -1,0 +1,124 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s, color 0.3s;
+  background-color: #121212;
+  color: #fff;
+}
+
+body.light-mode {
+  background-color: #f8f9fa;
+  color: #222;
+}
+
+#menuBtn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 2000;
+  font-size: 20px;
+}
+
+#sideMenu {
+  position: fixed;
+  top: 0;
+  right: -250px;
+  width: 250px;
+  height: 100%;
+  background: #333;
+  color: white;
+  padding: 20px;
+  transition: right 0.3s ease;
+  z-index: 1000;
+}
+
+#sideMenu.open {
+  right: 0;
+}
+
+main {
+  padding: 20px;
+  margin-top: 50px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: var(--theme-color, #00ccff);
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+canvas {
+  background-color: #222;
+  border: 1px solid #444;
+  max-width: 100%;
+}
+
+body.light-mode canvas {
+  background-color: #fff !important;
+  border: 1px solid #ccc;
+}
+
+/* Switch Toggle */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 24px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.color-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.color-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid white;
+}
+
+.cyan { background-color: #00ccff; }
+.purple { background-color: #a000c0; }
+.red { background-color: #e00000; }
+.green { background-color: #00cc66; }
