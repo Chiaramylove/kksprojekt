@@ -1,34 +1,43 @@
+:root {
+  --primary-color: #00ccff;
+  --bg-color: #121212;
+  --text-color: #ffffff;
+}
+
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
-  transition: background-color 0.3s, color 0.3s;
-  background-color: #121212;
+  font-family: Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--primary-color);
   color: #fff;
 }
 
-body.light-mode {
-  background-color: #f8f9fa;
-  color: #222;
-}
-
 #menuBtn {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  z-index: 2000;
-  font-size: 20px;
+  font-size: 1.5rem;
+  margin-right: 1rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
 }
 
 #sideMenu {
   position: fixed;
-  top: 0;
+  top: 80px;
   right: -250px;
   width: 250px;
-  height: 100%;
-  background: #333;
+  background-color: #333;
   color: white;
-  padding: 20px;
+  height: calc(100% - 80px);
+  padding: 1rem;
   transition: right 0.3s ease;
   z-index: 1000;
 }
@@ -37,88 +46,124 @@ body.light-mode {
   right: 0;
 }
 
-main {
-  padding: 20px;
-  margin-top: 50px;
+.toggle-group {
+  margin: 1rem 0;
 }
 
-button {
-  padding: 10px 20px;
-  margin: 5px;
-  background-color: var(--theme-color, #00ccff);
-  border: none;
-  color: white;
-  cursor: pointer;
-}
-
-canvas {
-  background-color: #222;
-  border: 1px solid #444;
-  max-width: 100%;
-}
-
-body.light-mode canvas {
-  background-color: #fff !important;
-  border: 1px solid #ccc;
-}
-
-/* Switch Toggle */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 24px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+.toggle-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .slider {
-  position: absolute;
+  width: 40px;
+  height: 20px;
+  background-color: #888;
+  border-radius: 10px;
+  position: relative;
+  display: inline-block;
   cursor: pointer;
-  background-color: #ccc;
-  transition: 0.4s;
-  border-radius: 24px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
 .slider:before {
   content: "";
   position: absolute;
-  height: 18px;
   width: 18px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: 0.4s;
+  height: 18px;
   border-radius: 50%;
+  background-color: white;
+  top: 1px;
+  left: 1px;
+  transition: transform 0.3s;
 }
 
 input:checked + .slider:before {
-  transform: translateX(26px);
+  transform: translateX(20px);
 }
 
-.color-options {
+.color-palette {
   display: flex;
   gap: 10px;
-  margin-top: 10px;
 }
 
 .color-circle {
-  width: 24px;
-  height: 24px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   cursor: pointer;
-  border: 2px solid white;
 }
 
-.cyan { background-color: #00ccff; }
-.purple { background-color: #a000c0; }
-.red { background-color: #e00000; }
-.green { background-color: #00cc66; }
+.color-circle[data-color="cyan"] {
+  background-color: #00ccff;
+}
+
+.color-circle[data-color="purple"] {
+  background-color: #8000ff;
+}
+
+.color-circle[data-color="red"] {
+  background-color: #ff0033;
+}
+
+.color-circle[data-color="green"] {
+  background-color: #00cc66;
+}
+
+main {
+  padding: 1rem;
+}
+
+.stocks-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.stocks-list button {
+  padding: 10px;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.chart-container {
+  background-color: white;
+  border-radius: 10px;
+  padding: 1rem;
+  color: black;
+}
+
+canvas {
+  max-width: 100%;
+}
+
+body.light-mode {
+  --bg-color: #f4f4f4;
+  --text-color: #222;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+body.light-mode .chart-container {
+  background-color: #fff;
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .stocks-list {
+    flex-direction: column;
+  }
+
+  #sideMenu {
+    width: 100%;
+    right: -100%;
+  }
+
+  #sideMenu.open {
+    right: 0;
+  }
+}
