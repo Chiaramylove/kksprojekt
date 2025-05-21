@@ -1,5 +1,5 @@
 :root {
-  --primary-color: #00ccff;
+  --accent-color: #00ccff;
   --bg-color: #121212;
   --text-color: #ffffff;
 }
@@ -9,161 +9,169 @@ body {
   font-family: Arial, sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
-  transition: all 0.3s ease;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.light-mode {
+  --bg-color: #f8f9fa;
+  --text-color: #222;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 header {
   display: flex;
   align-items: center;
-  padding: 1rem;
-  background-color: var(--primary-color);
+  padding: 1em;
+  background-color: var(--accent-color);
   color: #fff;
+  justify-content: space-between;
 }
 
 #menuBtn {
-  font-size: 1.5rem;
-  margin-right: 1rem;
   background: none;
   border: none;
+  font-size: 1.5em;
   color: white;
   cursor: pointer;
+  position: fixed;
+  right: 1rem;
+  top: 1rem;
+  z-index: 999;
 }
 
 #sideMenu {
   position: fixed;
-  top: 80px;
-  right: -250px;
+  top: 60px;
+  right: -300px;
   width: 250px;
   background-color: #333;
   color: white;
-  height: calc(100% - 80px);
+  height: calc(100% - 60px);
   padding: 1rem;
   transition: right 0.3s ease;
-  z-index: 1000;
+  z-index: 998;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.5);
 }
 
 #sideMenu.open {
   right: 0;
 }
 
-.toggle-group {
-  margin: 1rem 0;
+body.light-mode #sideMenu {
+  background-color: #eee;
+  color: #000;
 }
 
-.toggle-group label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
 .slider {
-  width: 40px;
-  height: 20px;
-  background-color: #888;
-  border-radius: 10px;
-  position: relative;
-  display: inline-block;
+  position: absolute;
   cursor: pointer;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .slider:before {
   content: "";
   position: absolute;
-  width: 18px;
   height: 18px;
-  border-radius: 50%;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
   background-color: white;
-  top: 1px;
-  left: 1px;
-  transition: transform 0.3s;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--accent-color);
 }
 
 input:checked + .slider:before {
-  transform: translateX(20px);
+  transform: translateX(22px);
 }
 
-.color-palette {
+.switch-label {
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
 }
 
-.color-circle {
-  width: 25px;
-  height: 25px;
+#themeColors {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.circle {
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   cursor: pointer;
 }
 
-.color-circle[data-color="cyan"] {
-  background-color: #00ccff;
-}
+.cyan { background: #00ccff; }
+.purple { background: #9c27b0; }
+.red { background: #f44336; }
+.green { background: #4caf50; }
 
-.color-circle[data-color="purple"] {
-  background-color: #8000ff;
-}
-
-.color-circle[data-color="red"] {
-  background-color: #ff0033;
-}
-
-.color-circle[data-color="green"] {
-  background-color: #00cc66;
-}
-
-main {
+#stock-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   padding: 1rem;
 }
 
-.stocks-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 1rem;
-}
-
-.stocks-list button {
-  padding: 10px;
+#stock-list button {
+  background-color: var(--accent-color);
   border: none;
-  background-color: var(--primary-color);
+  padding: 0.5rem 1rem;
   color: white;
   cursor: pointer;
   border-radius: 5px;
 }
 
-.chart-container {
-  background-color: white;
-  border-radius: 10px;
-  padding: 1rem;
-  color: black;
-}
-
 canvas {
-  max-width: 100%;
+  width: 100% !important;
+  max-height: 400px;
+  background-color: white;
+  border-radius: 5px;
 }
 
-body.light-mode {
-  --bg-color: #f4f4f4;
-  --text-color: #222;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-}
-
-body.light-mode .chart-container {
+body.light-mode canvas {
   background-color: #fff;
-  color: #000;
+  border: 1px solid #ccc;
 }
 
+#chart-container {
+  padding: 1rem;
+}
+
+/* Mobile responsiveness */
 @media (max-width: 768px) {
-  .stocks-list {
+  #stock-list {
     flex-direction: column;
   }
 
   #sideMenu {
-    width: 100%;
-    right: -100%;
-  }
-
-  #sideMenu.open {
-    right: 0;
+    width: 200px;
   }
 }
