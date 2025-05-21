@@ -1,32 +1,23 @@
 const TWELVE_DATA_KEY = "83579784923942f584e172a8955697a8";
-const FINNHUB_KEY = "d0mve4hr01qmjqmjnp3gd0mve4hr01qmjqmjnp40";
 let chart;
 let useEuro = false;
 
-async function loadStock(symbol) {
+window.loadStock = async function (symbol) {
   document.getElementById("stock-title").textContent = `Lade ${symbol}...`;
   document.getElementById("stock-price").textContent = "";
 
   try {
     const data = await fetchFromTwelveData(symbol);
-    if (!data) throw new Error("TwelveData failed, trying Finnhub...");
+    if (!data) throw new Error("Fehler bei TwelveData.");
     updateDisplay(symbol, data.price, data.dates, data.values);
-  } catch (err) {
-    console.warn(err.message);
-    try {
-      const data = await fetchFromFinnhub(symbol);
-      if (!data) throw new Error("Finnhub failed too.");
-      updateDisplay(symbol, data.price, data.dates, data.values);
-    } catch (finalError) {
-      console.error(finalError);
-      document.getElementById("stock-title").textContent = `Fehler beim Laden von ${symbol}`;
-    }
+  } catch (e) {
+    document.getElementById("stock-title").textContent = `Fehler beim Laden von ${symbol}`;
   }
-}
+};
 
 async function fetchFromTwelveData(symbol) {
   const priceUrl = `https://api.twelvedata.com/price?symbol=${symbol}&apikey=${TWELVE_DATA_KEY}`;
-  const seriesUrl = `https://api.twelvedata.com/time_series?symbol=${symbol}&interval=1day&outputsize=30&apikey=${TWELVE_DATA_KEY}`;
+  const seriesUrl = `https://api.twelvedata.com/time_series?symbol=${symbol}&interval=1day&outputsize=90&apikey=${TWELVE_DATA_KEY}`;
   const [priceRes, seriesRes] = await Promise.all([fetch(priceUrl), fetch(seriesUrl)]);
   const priceData = await priceRes.json();
   const seriesData = await seriesRes.json();
@@ -39,30 +30,16 @@ async function fetchFromTwelveData(symbol) {
   return { price: parseFloat(priceData.price), dates, values };
 }
 
-async function fetchFromFinnhub(symbol) {
-  const priceUrl = `https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${FINNHUB_KEY}`;
-  const seriesUrl = `https://finnhub.io/api/v1/stock/candle?symbol=${symbol}&resolution=D&count=30&token=${FINNHUB_KEY}`;
-  const [priceRes, seriesRes] = await Promise.all([fetch(priceUrl), fetch(seriesUrl)]);
-  const priceData = await priceRes.json();
-  const seriesData = await seriesRes.json();
-
-  if (!priceData.c || !seriesData.c || seriesData.s !== "ok") return null;
-
-  const dates = seriesData.t.map(t => new Date(t * 1000).toISOString().split("T")[0]);
-  const values = seriesData.c;
-
-  return { price: parseFloat(priceData.c), dates, values };
-}
-
 function updateDisplay(symbol, price, dates, values) {
-  const formattedPrice = useEuro
-    ? `Aktueller Preis: €${(price * 0.92).toFixed(2)}`
-    : `Aktueller Preis: $${price.toFixed(2)}`;
+  const currency = useEuro ? "€" : "$";
+  const rate = useEuro ? 0.92 : 1;
+  const convertedPrice = price * rate;
 
   document.getElementById("stock-title").textContent = symbol;
-  document.getElementById("stock-price").textContent = formattedPrice;
+  document.getElementById("stock-price").textContent = `Aktueller Preis: ${currency}${convertedPrice.toFixed(2)}`;
 
   if (chart) chart.destroy();
+
   const ctx = document.getElementById("stockChart").getContext("2d");
   chart = new Chart(ctx, {
     type: "line",
@@ -70,8 +47,8 @@ function updateDisplay(symbol, price, dates, values) {
       labels: dates,
       datasets: [{
         label: `${symbol} Kursverlauf`,
-        data: values,
-        borderColor: getComputedStyle(document.documentElement).getPropertyValue("--theme-color"),
+        data: values.map(v => v * rate),
+        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--primary-color'),
         backgroundColor: "rgba(0, 204, 255, 0.2)",
         tension: 0.3
       }]
@@ -80,12 +57,27 @@ function updateDisplay(symbol, price, dates, values) {
       responsive: true,
       interaction: { mode: "index", intersect: false },
       plugins: {
-        legend: { labels: { color: getComputedStyle(document.body).color } },
-        tooltip: { mode: "index", intersect: false }
+        legend: {
+          labels: {
+            color: getComputedStyle(document.body).color
+          }
+        },
+        tooltip: {
+          mode: "index",
+          intersect: false
+        },
+        zoom: {
+          pan: { enabled: true, mode: 'x' },
+          zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
+        }
       },
       scales: {
-        x: { ticks: { color: getComputedStyle(document.body).color } },
-        y: { ticks: { color: getComputedStyle(document.body).color } }
+        x: {
+          ticks: { color: getComputedStyle(document.body).color }
+        },
+        y: {
+          ticks: { color: getComputedStyle(document.body).color }
+        }
       }
     }
   });
@@ -114,13 +106,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
   colorCircles.forEach(circle => {
     circle.addEventListener("click", () => {
-      const newColor = circle.getAttribute("data-color");
-      document.documentElement.style.setProperty("--theme-color", newColor);
-      if (chart) chart.update();
+      const color = circle.dataset.color;
+      let cssColor = "#00ccff";
+      if (color === "purple") cssColor = "#8000ff";
+      if (color === "red") cssColor = "#ff0033";
+      if (color === "green") cssColor = "#00cc66";
+
+      document.documentElement.style.setProperty('--primary-color', cssColor);
     });
   });
-
-  // Default theme color
-  document.documentElement.style.setProperty("--theme-color", "#00ccff");
 });
 
