@@ -1,72 +1,63 @@
 body {
-  background-color: #121212;
-  color: #f0f0f0;
+  margin: 0;
   font-family: Arial, sans-serif;
-  padding: 20px;
+  background-color: #121212;
+  color: #ffffff;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-canvas {
-  background: #1e1e1e;
-  border-radius: 10px;
+body.light-mode {
+  background-color: #ffffff;
+  color: #121212;
 }
 
-button {
-  margin-bottom: 20px;
-  padding: 10px 20px;
-  background-color: #00ccff;
-  border: none;
-  color: white;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0099cc;
-}
-
-/* Side menu styles */
-.side-menu {
-  height: 100%;
-  width: 250px;
-  position: fixed;
-  top: 0; left: -250px;
-  background-color: #222;
-  padding: 20px;
-  box-sizing: border-box;
-  transition: left 0.3s ease;
-  color: white;
-  z-index: 1000;
+header {
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-  font-size: 18px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1em;
+  background-color: #1f1f1f;
+  color: #fff;
 }
 
-/* When menu is open */
+.side-menu {
+  position: fixed;
+  left: -200px;
+  top: 0;
+  width: 200px;
+  height: 100%;
+  background-color: #333;
+  color: white;
+  padding: 1em;
+  transition: left 0.3s;
+  z-index: 1000;
+}
+
 .side-menu.open {
   left: 0;
 }
 
-/* Menu button */
-#menuBtn {
-  position: fixed;
-  top: 15px; left: 15px;
-  background-color: #00ccff;
-  border: none;
+.side-menu button {
+  display: block;
+  width: 100%;
+  margin: 0.5em 0;
+  background: #444;
   color: white;
-  padding: 10px 15px;
-  font-size: 20px;
+  border: none;
+  padding: 0.5em;
   cursor: pointer;
-  border-radius: 5px;
-  z-index: 1100;
 }
 
-/* Toggle switch style */
+main {
+  margin-left: 1em;
+  padding: 1em;
+}
+
 .switch {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 24px;
+  width: 40px;
+  height: 20px;
 }
 
 .switch input {
@@ -78,44 +69,39 @@ button:hover {
 .slider {
   position: absolute;
   cursor: pointer;
-  background-color: #ccc;
-  border-radius: 34px;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #888;
   transition: 0.4s;
+  border-radius: 20px;
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 18px;
-  width: 18px;
-  left: 3px;
-  bottom: 3px;
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
   background-color: white;
-  border-radius: 50%;
   transition: 0.4s;
+  border-radius: 50%;
 }
 
-input:checked + .slider {
-  background-color: #2196f3;
+.switch input:checked + .slider {
+  background-color: #2196F3;
 }
 
-input:checked + .slider:before {
-  transform: translateX(26px);
+.switch input:checked + .slider:before {
+  transform: translateX(20px);
 }
 
-/* Light mode styles */
-body.light-mode {
-  background-color: #f8f9fa;
-  color: #222;
-}
-
-body.light-mode canvas {
-  background-color: #ffffff !important;
-  border: 1px solid #ccc;
-}
-
-body.light-mode .side-menu {
-  background-color: #e0e0e0;
-  color: #000;
+.currency-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  color: white;
+  margin-top: 1em;
 }
